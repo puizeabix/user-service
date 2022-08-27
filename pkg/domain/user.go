@@ -2,6 +2,8 @@ package domain
 
 import (
 	"github.com/google/uuid"
+
+	_ "github.com/golang/mock/mockgen/model" // For mockgen
 )
 
 type User struct {
@@ -12,7 +14,7 @@ type User struct {
 	Email     string    `json:"email" bson:"lastname"`
 }
 
-//go:generate mockgen -destination=../../mocks/mock_usersvc.go -package=mocks github.com/puizeabix/user-service/pkg/domain UserService
+//go:generate mockgen -destination=../../mocks/mock_usersvc.go -package=mocks . UserService
 
 type UserService interface {
 	Get(id uuid.UUID) (*User, error)
@@ -21,7 +23,7 @@ type UserService interface {
 	Delete(id uuid.UUID) error
 }
 
-//go:generate mockgen -destination=../../mocks/mock_userdb.go -package=mocks github.com/puizeabix/user-service/pkg/domain domain.UserDB
+//go:generate mockgen -destination=../../mocks/mock_userdb.go -package=mocks . UserDB
 type UserDB interface {
 	FindById(uuid.UUID) (*User, error)
 	FindAll() ([]*User, error)

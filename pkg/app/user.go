@@ -10,7 +10,7 @@ type userService struct {
 	DB domain.UserDB
 }
 
-func NewUserService(db *domain.UserDB) domain.UserService {
+func NewUserService(db domain.UserDB) domain.UserService {
 	return userService{
 		DB: db,
 	}
