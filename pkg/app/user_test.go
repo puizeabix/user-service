@@ -72,3 +72,32 @@ func TestDeleteUser(t *testing.T) {
 	err := svc.Delete(id)
 	assert.Nil(t, err)
 }
+
+func TestListUsers(t *testing.T) {
+	mockCtrl := gomock.NewController(t)
+	defer mockCtrl.Finish()
+
+	mockDB := mocks.NewMockUserDB(mockCtrl)
+	testData := []*domain.User{
+		{
+			ID:        uuid.New(),
+			Username:  "unit1",
+			FirstName: "Unit1",
+			LastName:  "Test1",
+			Email:     "unit1@test.com",
+		},
+		{
+			ID:        uuid.New(),
+			Username:  "unit2",
+			FirstName: "Unit2",
+			LastName:  "Test2",
+			Email:     "unit2@test.com",
+		},
+	}
+
+	mockDB.EXPECT().FindAll().Return(testData, nil).Times(1)
+	svc := NewUserService(mockDB)
+	ret, err := svc.List()
+	assert.Nil(t, err)
+	assert.Equal(t, 2, len(ret))
+}
